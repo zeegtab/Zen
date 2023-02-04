@@ -1,68 +1,52 @@
 import React, {useRef, useState} from 'react'
 import {Canvas, useFrame} from '@react-three/fiber/native'
+import {NavigationContainer, StackActions} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-function Cylinder(props) {
-    const mesh = useRef(null)
-    const [hovered, setHover] = useState(false)
-    const [active, setActive] = useState(false)
+import Intro from './screens/intro';
+import Home from './screens/home';
+import Candle from './screens/candle';
 
-    // useFrame((state, delta) => (mesh.current.rotation.z += 0.1));
+import {useFonts, Jost_500Medium, Jost_500Medium_Italic} from "@expo-google-fonts/jost";
+import AppLoading from 'expo-app-loading';
 
-    return (
-        <mesh
-            {...props}
-            ref={mesh}
-            scale={0.75}
-            // scale={active ? 1.5 : 1}
-            onClick={(event) => setActive(!active)}
-            onPointerOver={(event) => setHover(true)}
-            onPointerOut={(event) => setHover(false)}>
-            <cylinderGeometry attach="geometry" args={[props.radius, props.radius, props.height]}/>
-            <meshStandardMaterial color={props.color}/>
-        </mesh>
-    )
-}
+import {LogBox} from 'react-native';
 
-function Cone(props) {
-    const mesh = useRef(null)
-    const [hovered, setHover] = useState(false)
-    const [active, setActive] = useState(false)
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
-    // useFrame((state, delta) => (mesh.current.rotation.z += 0.1));
-
-    const [color, setColor] = useState('red');
-    return (
-        <mesh
-            position={props.position}
-            onPointerOver={() => setColor('red')}
-            onPointerOut={() => setColor('blue')}
-            // radialSegments={props.radialSegments}
-        >
-            <coneBufferGeometry
-                scale={[0,0,0]}
-                attach="geometry"
-                args={[props.radius, props.height, props.radialSegments]}
-            />
-            <meshBasicMaterial
-                attach="material"
-                color={color}
-                opacity={0.5}
-                transparent={true}
-            />
-        </mesh>
-    )
-}
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-    return (
-        <Canvas>
-            <ambientLight/>
-            <pointLight position={[10, 10, 10]}/>
-            <Cylinder position={[0, 0, 0]} color={'orange'} radius={0.4} height={3}/>
-            {/*<OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />*/}
-            <Cylinder position={[0, 1.25, 0]} color={'black'} radius={0.01} height={0.4}/>
-            <Cone position={[0,1.5,0]} color={'orange'} radius={0.25} height={0.5} radialSegments={15} />
 
-        </Canvas>
-    )
+    let [fontsLoaded] = useFonts({
+        Jost_500Medium, Jost_500Medium_Italic
+    });
+
+    if (!fontsLoaded) {
+        return <AppLoading/>
+    } else {
+        return (<>
+                <NavigationContainer>
+                    <Stack.Navigator initialRouteName='Home'>
+                        <Stack.Screen
+                            name='Home'
+                            component={Home}
+                            options={{title: 'Home'}}
+                        />
+                        <Stack.Screen
+                            name='Candle'
+                            component={Candle}
+                            options={{title: 'Candle'}}
+                        />
+                        <Stack.Screen
+                            name='Intro'
+                            component={Intro}
+                            options={{title: 'Introduction'}}
+                        />
+
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </>);
+    }
 }
