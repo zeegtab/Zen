@@ -1,10 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
-import Ripple from 'react-native-material-ripple';
 import {Canvas, useFrame} from '@react-three/fiber/native'
-import {NavigationContainer, StackActions} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
+import { PerspectiveCamera } from '@react-three/drei/native'
 
 const textButtons = StyleSheet.create({
     normal: {
@@ -98,7 +95,7 @@ function Cone(props) {
         <meshBasicMaterial
             attach="material"
             color={props.color}
-            opacity={0.5}
+            opacity={props.opacity}
             transparent={true}
         />
     </mesh>)
@@ -107,16 +104,24 @@ function Cone(props) {
 const Candle = ({navigation}) => {
 
     return (
+        <>
+        <PerspectiveCamera position={[0, 0, 100]}>
+            {(texture) => (
+                <mesh geometry={plane}>
+                    <meshBasicMaterial map={texture} />
+                </mesh>
+            )}
+        </PerspectiveCamera>
             <Canvas>
                 <ambientLight/>
                 <pointLight position={[10, 10, 10]}/>
                 <Cylinder position={[0, 0, 0]} color={'orange'} radius={0.4} height={3}/>
                 {/*<OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />*/}
                 <Cylinder position={[0, 1.25, 0]} color={'black'} radius={0.01} height={0.3}/>
-                <Cone position={[0, 1.5, 0]} color={'red'} radius={0.25} height={0.5} radialSegments={15}/>
-                <Cone position={[0, 1.5, 0]} color={'orange'} radius={0.1} height={0.3} radialSegments={15}/>
-
+                <Cone position={[0, 1.5, 0]} color={'red'} radius={0.1} height={0.3} radialSegments={15} opacity={0.75}/>
+                <Cone position={[0, 1.5, 0]} color={'yellow'} radius={0.25} height={0.5} radialSegments={15} opacity={0.4}/>
             </Canvas>
+            </>
     );
 };
 export default Candle;
