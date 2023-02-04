@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
 import {Canvas, useFrame} from '@react-three/fiber/native'
 import { PerspectiveCamera } from '@react-three/drei/native'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const textButtons = StyleSheet.create({
     normal: {
@@ -104,14 +105,6 @@ function Cone(props) {
 const Candle = ({navigation}) => {
 
     return (
-        <>
-        <PerspectiveCamera position={[0, 0, 100]}>
-            {(texture) => (
-                <mesh geometry={plane}>
-                    <meshBasicMaterial map={texture} />
-                </mesh>
-            )}
-        </PerspectiveCamera>
             <Canvas>
                 <ambientLight/>
                 <pointLight position={[10, 10, 10]}/>
@@ -121,7 +114,6 @@ const Candle = ({navigation}) => {
                 <Cone position={[0, 1.5, 0]} color={'red'} radius={0.1} height={0.3} radialSegments={15} opacity={0.75}/>
                 <Cone position={[0, 1.5, 0]} color={'yellow'} radius={0.25} height={0.5} radialSegments={15} opacity={0.4}/>
             </Canvas>
-            </>
     );
 };
 export default Candle;
