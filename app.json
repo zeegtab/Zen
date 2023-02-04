@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Zen",
-    "slug": "Zen",
+    "name": "recycling-project",
+    "slug": "recycling-project",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
